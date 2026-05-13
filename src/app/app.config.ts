@@ -4,14 +4,14 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
  
  
-import { counterFeature } from './store/counter.feature';
 import { provideState, provideStore } from '@ngrx/store';
+import { formFeature } from './Form/form.feature';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
    provideStore(),
-    provideState(counterFeature)
+     provideState(formFeature)
 ]
 };
