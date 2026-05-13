@@ -1,9 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { decrement, increment, reset } from './store/counter.actions';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { counterFeature } from './store/counter.feature';
+import { resetForm, updateFormField } from './Form/form.actions';
+import { formFeature } from './Form/form.feature';
 
 @Component({
   selector: 'app-root',
@@ -12,26 +11,23 @@ import { counterFeature } from './store/counter.feature';
   styleUrl: './app.css'
 })
 export class App {
- protected readonly title = signal('ngrx-tutorial');
+  // form$ : Observable<{ name: string; email: string }>;
 
-  counter$!: Observable<number>;
 
-  constructor(private store:Store ){
-    this.counter$ = this.store.select( counterFeature.selectCounterState);
+  // constructor( private store: Store ) {
+  //   this.form$ = this.store.select(formFeature.selectFormState);
+  // }
+
+  private store = inject(Store);
+
+  form$ = this.store.select(formFeature.selectFormState);
+
+  updatedField(field: 'name' | 'email', value: string) {
+    this.store.dispatch( updateFormField({ field, value }) );
   }
 
-  
-  
-
-  inc(){
-    this.store.dispatch(increment());
+  resetForm() {
+    this.store.dispatch(resetForm())
   }
-
-  dec(){
-    this.store.dispatch(decrement());
-  }
-
-  resetCount(){
-    this.store.dispatch(reset());
 }
-}
+
